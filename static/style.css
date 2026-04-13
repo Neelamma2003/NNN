@@ -1,0 +1,86 @@
+/* LIGHT GRADIENT BACKGROUND */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #f6d365, #fda085, #a1c4fd);
+}
+
+/* NAVBAR */
+.navbar {
+  background: #4f46e5;
+  padding: 15px;
+  text-align: center;
+}
+
+.navbar a {
+  color: white;
+  margin: 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* CARD DESIGN */
+.card {
+  background: white;
+  width: 450px;
+  margin: 80px auto;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  text-align: center;
+  word-break: break-all;
+}
+
+/* INPUT */
+input {
+  width: 90%;
+  padding: 12px;
+  margin: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+/* BUTTON */
+button {
+  padding: 12px 20px;
+  background: #22c55e;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #16a34a;
+}
+
+/* TABLE */
+table {
+  width: 90%;
+  margin: auto;
+  border-collapse: collapse;
+  background: white;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+th {
+  background: #4f46e5;
+  color: white;
+}
+
+/* LINKS */
+a {
+  color: #4f46e5;
+  font-weight: bold;
+}
+.carousel img {
+  width: 100%;
+  height: 200px;
+  margin: 20px auto;
+  display: block;
+  border-radius: 15px;
+}

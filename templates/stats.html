@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Smart Stats Dashboard</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<style>
+
+/* FULL WIDTH CAROUSEL */
+.carousel img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+/* OVERLAY TEXT */
+.carousel {
+  position: relative;
+}
+.carousel-text {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+  background: rgba(0,0,0,0.5);
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+/* CARD */
+.card {
+  background: linear-gradient(135deg,#ffffff,#dbeafe);
+  width: 420px;
+  margin: 20px auto;
+  padding: 25px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+/* STAT BOX */
+.stat {
+  display: inline-block;
+  margin: 10px;
+  padding: 15px;
+  border-radius: 15px;
+  background: linear-gradient(to right,#6366f1,#22c55e);
+  color: white;
+  width: 110px;
+}
+
+/* PROGRESS RING */
+.circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: conic-gradient(#4f46e5 {{data[3]*10}}%, #ddd 0%);
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* BUTTON */
+button {
+  padding: 10px;
+  margin: 5px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(to right,#22c55e,#16a34a);
+  color: white;
+  cursor: pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+<a href="/">Home</a>
+<a href="/dashboard">Dashboard</a>
+</div>
+
+<!-- CAROUSEL -->
+<div class="carousel">
+<img id="slide" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71">
+<div class="carousel-text">📊 Smart URL Analytics Dashboard</div>
+</div>
+
+<script>
+var imgs = [
+"https://images.unsplash.com/photo-1551288049-bebda4e38f71",
+"https://images.unsplash.com/photo-1551288049-bebda4e38f71",
+"https://images.unsplash.com/photo-1543286386-713bdd548da4",
+"https://images.unsplash.com/photo-1519389950473-47ba0277781c"
+];
+
+var i=0;
+setInterval(()=>{
+i=(i+1)%imgs.length;
+document.getElementById("slide").src=imgs[i];
+},2500);
+</script>
+
+<!-- MAIN CARD -->
+<div class="card">
+
+<h2>🚀 URL Insights</h2>
+
+<p><b>Short URL:</b><br>http://localhost:5000/{{data[2]}}</p>
+<p><b>Original URL:</b><br>{{data[1]}}</br></p>
+
+<!-- STATS -->
+<div>
+<div class="stat">
+<p id="count">0</p>
+<small>Clicks</small>
+</div>
+
+<div class="stat">
+<p>
+{% if data[4] %}
+Active ✅
+{% else %}
+No Expiry
+{% endif %}
+</p>
+<small>Status</small>
+</div>
+
+<div class="stat">
+<p>
+{% if data[3] > 10 %}
+🔥 Viral
+{% elif data[3] > 5 %}
+📊 Medium
+{% else %}
+⚠️ Low
+{% endif %}
+</p>
+<small>Score</small>
+</div>
+</div>
+
+<!-- ANIMATED COUNTER -->
+<script>
+var target={{data[3]}};
+var c=0;
+var inter=setInterval(()=>{
+c++;
+document.getElementById("count").innerHTML=c;
+if(c>=target) clearInterval(inter);
+},100);
+</script>
+
+<!-- PROGRESS RING -->
+<div class="circle">{{data[3]}}</div>
+
+<!-- COUNTDOWN -->
+<p><b>⏱ Time Left:</b> <span id="timer"></span></p>
+
+<script>
+var exp="{{data[4]}}";
+if(exp){
+setInterval(()=>{
+var now=new Date().getTime();
+var d=new Date(exp).getTime()-now;
+if(d>0){
+document.getElementById("timer").innerHTML=Math.floor(d/(1000*60))+" min left";
+}else{
+document.getElementById("timer").innerHTML="Expired ❌";
+}
+},1000);
+}
+</script>
+
+<!-- SMART MESSAGE -->
+<p>
+{% if data[3] > 10 %}
+🔥 This link is trending!
+{% elif data[3] > 5 %}
+📊 Performing well
+{% else %}
+⚠️ Needs promotion
+{% endif %}
+</p>
+
+
+
+<br><br>
+
+<!-- BUTTONS -->
+<button onclick="copy()">📋 Copy</button>
+<button onclick="openLink()">🚀 Open</button>
+
+</div>
+
+<script>
+
+// COPY
+function copy(){
+navigator.clipboard.writeText("http://localhost:5000/{{data[2]}}");
+alert("Copied!");
+}
+
+// OPEN
+function openLink(){
+window.open("/{{data[2]}}");
+}
+
+// QR FIX (IMPORTANT: Replace IP)
+var base="http://192.168.1.5:5000/"; 
+var url=base+"{{data[2]}}";
+
+document.getElementById("qr").src=
+"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+encodeURIComponent(url);
+
+</script>
+
+<br>
+<div style="text-align:center;">
+<a href="/dashboard">⬅ Back</a>
+</div>
+
+</body>
+</html>
